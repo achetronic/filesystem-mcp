@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: 'Release tag where to create the binaries (as SemVer vX.X.X)'
+        description: "Release tag where to create the binaries (as SemVer vX.X.X)"
         required: true
         default: v0.1.0
 
@@ -53,7 +53,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '${{ steps.read_go_version.outputs.go_version }}'
+          go-version: "${{ steps.read_go_version.outputs.go_version }}"
 
       - name: "Build binary"
         id: build_binary
@@ -71,7 +71,7 @@ jobs:
         run: |
           export GOOS=${{ matrix.goos }}
           export GOARCH=${{ matrix.goarch }}
-          export PACKAGE_NAME=mcp-forge-${{ steps.read_tag.outputs.release_tag }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+          export PACKAGE_NAME=filesystem-mcp-${{ steps.read_tag.outputs.release_tag }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
 
           make package
           make package-signature
