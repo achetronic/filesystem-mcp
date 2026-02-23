@@ -1,6 +1,6 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= ghcr.io/achetronic/mcp-forge:placeholder
+IMG ?= ghcr.io/achetronic/filesystem-mcp:placeholder
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -80,7 +80,7 @@ swagger: install-swag ## Build Swagger documents.
 
 .PHONY: build
 build: fmt vet ## Build CLI binary.
-	go build -o bin/mcp-forge-$(GO_OS)-$(GO_ARCH) cmd/main.go
+	go build -o bin/filesystem-mcp-$(GO_OS)-$(GO_ARCH) cmd/main.go
 
 .PHONY: run
 run: fmt vet ## Run a controller from your host.
@@ -104,9 +104,9 @@ package: ## Package binary.
 	@mkdir -p dist
 
 	@if [ "$(OS)" = "linux" ]; then \
-		tar --transform="s/mcp-forge-$(GO_OS)-$(GO_ARCH)/mcp-forge/" -cvzf dist/$(PACKAGE_NAME) -C bin mcp-forge-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
+		tar --transform="s/filesystem-mcp-$(GO_OS)-$(GO_ARCH)/filesystem-mcp/" -cvzf dist/$(PACKAGE_NAME) -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
 	elif [ "$(OS)" = "darwin" ]; then \
-		tar -cvzf dist/$(PACKAGE_NAME) -s '/mcp-forge-$(GO_OS)-$(GO_ARCH)/mcp-forge/' -C bin mcp-forge-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
+		tar -cvzf dist/$(PACKAGE_NAME) -s '/filesystem-mcp-$(GO_OS)-$(GO_ARCH)/filesystem-mcp/' -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
 	else \
 		echo "Unsupported OS: $(GO_OS)"; \
 		exit 1; \
