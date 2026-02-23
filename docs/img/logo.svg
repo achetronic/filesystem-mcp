@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="24" fill="url(#bg)"/>
+  <!-- Folder body -->
+  <path d="M28 42 L28 82 C28 85.3 30.7 88 34 88 L86 88 C89.3 88 92 85.3 92 82 L92 50 C92 46.7 89.3 44 86 44 L58 44 L52 36 C51.2 34.8 49.8 34 48.3 34 L34 34 C30.7 34 28 36.7 28 40 Z" fill="white" opacity="0.95"/>
+  <!-- Terminal cursor -->
+  <rect x="40" y="56" width="12" height="3" rx="1.5" fill="#6366f1"/>
+  <rect x="40" y="64" width="28" height="3" rx="1.5" fill="#6366f1" opacity="0.5"/>
+  <rect x="40" y="72" width="20" height="3" rx="1.5" fill="#6366f1" opacity="0.3"/>
+  <!-- Chevron prompt -->
+  <path d="M34 57.5 L38 60 L34 62.5" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

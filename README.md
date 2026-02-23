@@ -1,7 +1,11 @@
-# Filesystem MCP
+<p align="center">
+  <img src="docs/img/header.svg" alt="Filesystem MCP" width="800">
+</p>
 
-![GitHub go.mod Go version (subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/achetronic/filesystem-mcp)
-![GitHub](https://img.shields.io/github/license/achetronic/filesystem-mcp)
+<p align="center">
+  <img src="https://img.shields.io/github/go-mod/go-version/achetronic/filesystem-mcp" alt="Go version">
+  <img src="https://img.shields.io/github/license/achetronic/filesystem-mcp" alt="License">
+</p>
 
 A production-ready MCP (Model Context Protocol) server that gives AI agents full control over a filesystem — reading, writing, editing, searching, diffing files, executing commands, and managing processes. Built in Go with OAuth authorization and RBAC.
 
