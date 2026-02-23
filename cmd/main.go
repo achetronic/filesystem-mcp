@@ -9,6 +9,8 @@ import (
 	"mcp-forge/internal/globals"
 	"mcp-forge/internal/handlers"
 	"mcp-forge/internal/middlewares"
+	"mcp-forge/internal/rbac"
+	"mcp-forge/internal/state"
 	"mcp-forge/internal/tools"
 
 	//
@@ -35,47 +37,49 @@ func main() {
 		appCtx.Logger.Info("failed starting JWT validation middleware", "error", err.Error())
 	}
 
-	// 2. Create a new MCP server
+	// 2. Initialize RBAC engine
+	rbacEngine, err := rbac.NewEngine(appCtx)
+	if err != nil {
+		log.Fatalf("failed creating RBAC engine: %v", err.Error())
+	}
+
+	// 3. Initialize shared state
+	undoStore := state.NewUndoStore()
+	scratchStore := state.NewScratchStore()
+	processStore := state.NewProcessStore()
+
+	// 4. Create a new MCP server
 	mcpServer := server.NewMCPServer(
 		appCtx.Config.Server.Name,
 		appCtx.Config.Server.Version,
 		server.WithToolCapabilities(true),
 	)
 
-	// 3. Initialize handlers for later usage
+	// 5. Initialize handlers for later usage
 	hm := handlers.NewHandlersManager(handlers.HandlersManagerDependencies{
 		AppCtx: appCtx,
 	})
 
-	// 4. Add some useful magic in the form of tools to your MCP server
-	// This is the most useful part
+	// 6. Add filesystem and system tools to the MCP server
 	tm := tools.NewToolsManager(tools.ToolsManagerDependencies{
 		AppCtx: appCtx,
 
 		McpServer:   mcpServer,
 		Middlewares: []middlewares.ToolMiddleware{},
+		RBAC:        rbacEngine,
+		Undo:        undoStore,
+		Scratch:     scratchStore,
+		Processes:   processStore,
 	})
 	tm.AddTools()
 
-	// TODO: Include custom user-created logic like adding a ResourcesManager when needed
-	// rm := resources.NewResourcesManager(tools.ResourcesManagerDependencies{
-	// 	 AppCtx: appCtx,
-	//
-	// 	 McpServer:       mcpServer,
-	// 	 Middlewares:     []middlewares.ResourcesMiddleware{},
-	// })
-	// rm.AddResources()
-
-	// 5. Wrap MCP server in a transport (stdio, HTTP, SSE)
+	// 7. Wrap MCP server in a transport (stdio, HTTP, SSE)
 	switch appCtx.Config.Server.Transport.Type {
 	case "http":
 		httpServer := server.NewStreamableHTTPServer(mcpServer,
 			server.WithHeartbeatInterval(30*time.Second),
 			server.WithStateLess(false))
 
-		// Register it under a path, then add custom endpoints.
-		// Custom endpoints are needed as the library is not feature-complete according to MCP spec requirements (2025-06-16)
-		// Ref: https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization#overview
 		mux := http.NewServeMux()
 		mux.Handle("/mcp", accessLogsMw.Middleware(jwtValidationMw.Middleware(httpServer)))
 
@@ -89,7 +93,6 @@ func main() {
 				accessLogsMw.Middleware(http.HandlerFunc(hm.HandleOauthProtectedResources)))
 		}
 
-		// Start StreamableHTTP server
 		appCtx.Logger.Info("starting StreamableHTTP server", "host", appCtx.Config.Server.Transport.HTTP.Host)
 		err := http.ListenAndServe(appCtx.Config.Server.Transport.HTTP.Host, mux)
 		if err != nil {
@@ -97,7 +100,6 @@ func main() {
 		}
 
 	default:
-		// Start stdio server
 		appCtx.Logger.Info("starting stdio server")
 		if err := server.ServeStdio(mcpServer); err != nil {
 			log.Fatal(err)

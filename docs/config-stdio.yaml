@@ -1,6 +1,19 @@
 # MCP Server Configuration
 server:
-  name: "MCP Forge"
+  name: "Filesystem MCP"
   version: "0.1.0"
   transport:
     type: "stdio"
+
+# RBAC Configuration
+# Controls which operations are allowed on which paths
+rbac:
+  enabled: false
+  default_policy: allow
+
+  rules: []
+    # Example: restrict to a single directory
+    # - name: "local-workspace"
+    #   when: []
+    #   paths: ["/home/user/workspace/**"]
+    #   operations: [read, write, exec]

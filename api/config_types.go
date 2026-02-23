@@ -86,10 +86,26 @@ type OAuthProtectedResourceConfig struct {
 	DPoPBoundAccessTokensRequired         bool     `yaml:"dpop_bound_access_tokens_required,omitempty"`
 }
 
+// RBACRuleConfig represents a single RBAC rule
+type RBACRuleConfig struct {
+	Name       string   `yaml:"name"`
+	When       []string `yaml:"when,omitempty"`
+	Paths      []string `yaml:"paths"`
+	Operations []string `yaml:"operations"`
+}
+
+// RBACConfig represents the RBAC configuration section
+type RBACConfig struct {
+	Enabled       bool             `yaml:"enabled"`
+	DefaultPolicy string           `yaml:"default_policy"`
+	Rules         []RBACRuleConfig `yaml:"rules,omitempty"`
+}
+
 // Configuration represents the complete configuration structure
 type Configuration struct {
 	Server                   ServerConfig                 `yaml:"server,omitempty"`
 	Middleware               MiddlewareConfig             `yaml:"middleware,omitempty"`
 	OAuthAuthorizationServer OAuthAuthorizationServer     `yaml:"oauth_authorization_server,omitempty"`
 	OAuthProtectedResource   OAuthProtectedResourceConfig `yaml:"oauth_protected_resource,omitempty"`
+	RBAC                     RBACConfig                   `yaml:"rbac,omitempty"`
 }

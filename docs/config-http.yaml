@@ -1,6 +1,6 @@
 # MCP Server Configuration
 server:
-  name: "MCP Forge"
+  name: "Filesystem MCP"
   version: "0.1.0"
   transport:
     type: "http"
@@ -31,6 +31,34 @@ middleware:
         allow_conditions: []
           #- expression: 'payload.groups.exists(group, group in ["admin", "editor"])'
           #- expression: 'has(payload.email) && payload.email.endsWith("@example.com")'
+
+# RBAC Configuration
+# Controls which operations are allowed on which paths, optionally scoped by JWT claims
+rbac:
+  enabled: true
+  default_policy: deny  # deny | allow
+
+  rules:
+    # Admins get full access everywhere
+    - name: "admins"
+      when:
+        - 'payload.groups.exists(g, g == "admin")'
+      paths: ["/**"]
+      operations: [read, write, exec]
+
+    # Developers can read and write in project directories
+    - name: "developers"
+      when:
+        - 'payload.groups.exists(g, g == "developer")'
+      paths: ["/home/*/projects/**", "/tmp/**"]
+      operations: [read, write]
+
+    # Read-only access for viewers
+    - name: "viewers"
+      when:
+        - 'payload.scope.contains("read")'
+      paths: ["/home/*/projects/**"]
+      operations: [read]
 
 # Oauth Authorization Server Configuration
 # Endpoint: /.well-known/oauth-authorization-server
