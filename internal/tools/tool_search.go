@@ -35,6 +35,10 @@ func (tm *ToolsManager) HandleSearch(ctx context.Context, request mcp.CallToolRe
 		return toolError("path parameter is required"), nil
 	}
 
+	if err := sanitizePath(searchPath); err != nil {
+		return toolError(err.Error()), nil
+	}
+
 	absPath, err := filepath.Abs(searchPath)
 	if err != nil {
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil

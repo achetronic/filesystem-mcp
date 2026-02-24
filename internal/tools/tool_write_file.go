@@ -18,6 +18,10 @@ func (tm *ToolsManager) HandleWriteFile(ctx context.Context, request mcp.CallToo
 		return toolError("path parameter is required"), nil
 	}
 
+	if err := sanitizePath(path); err != nil {
+		return toolError(err.Error()), nil
+	}
+
 	content, ok := args["content"].(string)
 	if !ok {
 		return toolError("content parameter is required"), nil

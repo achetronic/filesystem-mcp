@@ -20,9 +20,17 @@ func (tm *ToolsManager) HandleDiff(ctx context.Context, request mcp.CallToolRequ
 		return toolError("path_a parameter is required"), nil
 	}
 
+	if err := sanitizePath(pathA); err != nil {
+		return toolError(err.Error()), nil
+	}
+
 	pathB, ok := args["path_b"].(string)
 	if !ok || pathB == "" {
 		return toolError("path_b parameter is required"), nil
+	}
+
+	if err := sanitizePath(pathB); err != nil {
+		return toolError(err.Error()), nil
 	}
 
 	absPathA, err := filepath.Abs(pathA)

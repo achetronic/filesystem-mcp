@@ -22,6 +22,9 @@ func (tm *ToolsManager) HandleExec(ctx context.Context, request mcp.CallToolRequ
 
 	workdir := ""
 	if v, ok := args["workdir"].(string); ok && v != "" {
+		if err := sanitizePath(v); err != nil {
+			return toolError(err.Error()), nil
+		}
 		absWorkdir, err := filepath.Abs(v)
 		if err != nil {
 			return toolError(fmt.Sprintf("invalid workdir: %s", err.Error())), nil

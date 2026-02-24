@@ -30,6 +30,10 @@ func (tm *ToolsManager) HandleLs(ctx context.Context, request mcp.CallToolReques
 		return toolError("path parameter is required"), nil
 	}
 
+	if err := sanitizePath(path); err != nil {
+		return toolError(err.Error()), nil
+	}
+
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
