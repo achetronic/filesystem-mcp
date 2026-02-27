@@ -173,8 +173,6 @@ npm i mcp-remote && make run
         "http-only",
         "--header",
         "Authorization: Bearer ${JWT}",
-        "--header",
-        "X-Validated-Jwt: ${JWT}",
       ],
       env: {
         JWT: "eyJhbGciOiJSUzI1NiIsImtpZCI6...",
