@@ -15,7 +15,7 @@ A production-ready MCP (Model Context Protocol) server that gives AI agents full
 - 🔐 **RBAC with JWT + CEL** — restrict operations per path using glob patterns and JWT claim expressions
 - ⚡ **Token-efficient by design** — partial file reads, batch edits, ranged diffs, search with context control
 - 🔑 **OAuth RFC 8414 / RFC 9728 compliant** — `.well-known/oauth-protected-resource` and `.well-known/oauth-authorization-server`
-- 🛡️ **JWT validation** — delegated to external proxies (Istio) or validated locally via JWKS + CEL
+- 🛡️ **JWT validation** — validated locally via JWKS + CEL expressions
 - 🚀 **Dual transport** — stdio for local clients, HTTP for remote (Claude Web, OpenAI, etc.)
 
 ## Tools
