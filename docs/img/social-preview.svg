@@ -48,8 +48,8 @@
   <rect x="813" y="500" width="155" height="38" rx="19" fill="#6366f1" opacity="0.12"/>
   <text x="890" y="524" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="#6366f1" font-weight="600">stdio + http</text>
 
-  <!-- chip 4: OAuth RFC 8414 -->
-  <rect x="982" y="500" width="190" height="38" rx="19" fill="#6366f1" opacity="0.12"/>
-  <text x="1077" y="524" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="#6366f1" font-weight="600">OAuth RFC 8414</text>
+  <!-- chip 4: OAuth RFC 8414 / 9728 -->
+  <rect x="982" y="500" width="240" height="38" rx="19" fill="#6366f1" opacity="0.12"/>
+  <text x="1102" y="524" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="#6366f1" font-weight="600">RFC 8414 / 9728</text>
 
 </svg>
