@@ -26,29 +26,18 @@ type AccessLogsConfig struct {
 	RedactedHeaders []string `yaml:"redacted_headers"`
 }
 
-// JWTValidationLocalConfig represents the local JWT validation configuration
-type JWTValidationLocalConfig struct {
-	JWKSUri         string                        `yaml:"jwks_uri"`
-	CacheInterval   time.Duration                 `yaml:"cache_interval"`
-	AllowConditions []JWTValidationAllowCondition `yaml:"allow_conditions,omitempty"`
-}
-
-// JWTValidationAllowCondition represents a condition for allowing a request after the local JWT validation configuration
-type JWTValidationAllowCondition struct {
+// JWTAllowCondition represents a CEL expression condition for JWT validation
+type JWTAllowCondition struct {
 	Expression string `yaml:"expression"`
 }
 
-// JWTValidationConfig represents the JWT validation configuration
-type JWTValidationConfig struct {
-	Strategy        string                   `yaml:"strategy"`
-	ForwardedHeader string                   `yaml:"forwarded_header,omitempty"`
-	Local           JWTValidationLocalConfig `yaml:"local,omitempty"`
-}
-
-// JWTConfig represents the JWT middleware configuration
+// JWTConfig represents the JWT middleware configuration.
+// When enabled, tokens are always validated locally against the JWKS fetched from jwks_uri.
 type JWTConfig struct {
-	Enabled    bool                `yaml:"enabled"`
-	Validation JWTValidationConfig `yaml:"validation,omitempty"`
+	Enabled         bool               `yaml:"enabled"`
+	JWKSUri         string             `yaml:"jwks_uri,omitempty"`
+	CacheInterval   time.Duration      `yaml:"cache_interval,omitempty"`
+	AllowConditions []JWTAllowCondition `yaml:"allow_conditions,omitempty"`
 }
 
 // MiddlewareConfig represents the middleware configuration section

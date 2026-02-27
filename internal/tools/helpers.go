@@ -1,11 +1,20 @@
 package tools
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
+	"mcp-forge/internal/middlewares"
+
 	"github.com/mark3labs/mcp-go/mcp"
 )
+
+// jwtPayloadFromCtx extracts the verified JWT payload from the context.
+// Returns nil if JWT validation was disabled or no token is present.
+func jwtPayloadFromCtx(ctx context.Context) map[string]any {
+	return middlewares.JWTPayloadFromContext(ctx)
+}
 
 func sanitizePath(path string) error {
 	openIdx := strings.Index(path, "{")

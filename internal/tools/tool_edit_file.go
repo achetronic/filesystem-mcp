@@ -41,7 +41,7 @@ func (tm *ToolsManager) HandleEditFile(ctx context.Context, request mcp.CallTool
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("edit_file", []string{absPath}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("edit_file", []string{absPath}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

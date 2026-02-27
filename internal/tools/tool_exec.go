@@ -32,7 +32,7 @@ func (tm *ToolsManager) HandleExec(ctx context.Context, request mcp.CallToolRequ
 		workdir = absWorkdir
 	}
 
-	if err := tm.dependencies.RBAC.Check("exec", []string{resolveExecPath(workdir)}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("exec", []string{resolveExecPath(workdir)}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

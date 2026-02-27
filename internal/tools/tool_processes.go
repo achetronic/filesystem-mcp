@@ -14,7 +14,7 @@ func (tm *ToolsManager) HandleProcessStatus(ctx context.Context, request mcp.Cal
 
 	id, _ := args["id"].(string)
 
-	if err := tm.dependencies.RBAC.Check("process_status", []string{}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("process_status", []string{}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 
@@ -77,7 +77,7 @@ func (tm *ToolsManager) HandleProcessKill(ctx context.Context, request mcp.CallT
 		return toolError("id parameter is required"), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("process_kill", []string{}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("process_kill", []string{}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 
