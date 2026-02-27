@@ -43,7 +43,7 @@ func (tm *ToolsManager) HandleDiff(ctx context.Context, request mcp.CallToolRequ
 		return toolError(fmt.Sprintf("invalid path_b: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("diff", []string{absPathA, absPathB}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("diff", []string{absPathA, absPathB}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

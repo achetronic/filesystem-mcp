@@ -152,8 +152,8 @@ func (mw *JWTValidationMiddleware) Middleware(next http.Handler) http.Handler {
 				}
 			}
 
-			// Store validated token in request header for downstream use (e.g. RBAC)
-			req.Header.Set("X-Validated-Jwt", tokenString)
+			// Store verified payload in request context for downstream use (e.g. RBAC)
+			*req = *req.WithContext(ContextWithJWTPayload(req.Context(), tokenPayload))
 		}
 
 	nextStage:

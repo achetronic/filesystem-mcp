@@ -39,7 +39,7 @@ func (tm *ToolsManager) HandleLs(ctx context.Context, request mcp.CallToolReques
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("ls", []string{absPath}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("ls", []string{absPath}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

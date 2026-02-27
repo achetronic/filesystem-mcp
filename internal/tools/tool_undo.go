@@ -26,7 +26,7 @@ func (tm *ToolsManager) HandleUndo(ctx context.Context, request mcp.CallToolRequ
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("undo", []string{absPath}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("undo", []string{absPath}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

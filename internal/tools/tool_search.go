@@ -44,7 +44,7 @@ func (tm *ToolsManager) HandleSearch(ctx context.Context, request mcp.CallToolRe
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("search", []string{absPath}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("search", []string{absPath}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 

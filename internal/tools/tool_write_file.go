@@ -32,7 +32,7 @@ func (tm *ToolsManager) HandleWriteFile(ctx context.Context, request mcp.CallToo
 		return toolError(fmt.Sprintf("invalid path: %s", err.Error())), nil
 	}
 
-	if err := tm.dependencies.RBAC.Check("write_file", []string{absPath}, nil); err != nil {
+	if err := tm.dependencies.RBAC.Check("write_file", []string{absPath}, jwtPayloadFromCtx(ctx)); err != nil {
 		return toolError(err.Error()), nil
 	}
 
