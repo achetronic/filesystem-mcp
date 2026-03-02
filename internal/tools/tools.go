@@ -24,23 +24,29 @@ type ToolsManagerDependencies struct {
 
 type ToolsManager struct {
 	dependencies ToolsManagerDependencies
+	toolPrefix   string
 }
 
 func NewToolsManager(deps ToolsManagerDependencies) *ToolsManager {
 	return &ToolsManager{
 		dependencies: deps,
+		toolPrefix:   deps.AppCtx.ToolPrefix,
 	}
+}
+
+func (tm *ToolsManager) toolName(base string) string {
+	return tm.toolPrefix + base
 }
 
 func (tm *ToolsManager) AddTools() {
 
 	// system_info
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("system_info",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("system_info"),
 		mcp.WithDescription("Get system information: OS, architecture, hostname, user, working directory, environment variables"),
 	), tm.HandleSystemInfo)
 
 	// ls
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("ls",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("ls"),
 		mcp.WithDescription("List directory contents with optional depth, glob pattern filter, and hidden file inclusion. Use depth=1 for flat listing, depth>1 for tree view"),
 		mcp.WithString("path",
 			mcp.Required(),
@@ -58,7 +64,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleLs)
 
 	// read_file
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("read_file",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("read_file"),
 		mcp.WithDescription("Read a file's contents. Supports reading specific line ranges to save tokens. Without ranges, reads the entire file"),
 		mcp.WithString("path",
 			mcp.Required(),
@@ -70,7 +76,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleReadFile)
 
 	// write_file
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("write_file",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("write_file"),
 		mcp.WithDescription("Create or overwrite a file. Automatically creates parent directories. Saves undo state before writing. Call this tool once per file — do not combine multiple files into one call"),
 		mcp.WithString("path",
 			mcp.Required(),
@@ -83,7 +89,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleWriteFile)
 
 	// edit_file
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("edit_file",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("edit_file"),
 		mcp.WithDescription("Apply one or more find-and-replace edits to a file. Edits are applied sequentially. Each edit must match exactly. Saves undo state before any edits. Reports which edits succeeded and which failed"),
 		mcp.WithString("path",
 			mcp.Required(),
@@ -96,7 +102,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleEditFile)
 
 	// search
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("search",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("search"),
 		mcp.WithDescription("Search for text patterns in files recursively. Returns matching file paths, line numbers, and content with configurable context"),
 		mcp.WithString("pattern",
 			mcp.Required(),
@@ -124,7 +130,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleSearch)
 
 	// diff
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("diff",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("diff"),
 		mcp.WithDescription("Compare two files or sections of files. Returns unified diff format. Supports line ranges to compare specific sections"),
 		mcp.WithString("path_a",
 			mcp.Required(),
@@ -149,7 +155,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleDiff)
 
 	// exec
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("exec",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("exec"),
 		mcp.WithDescription("Execute a shell command. Can run in foreground (returns output) or background (returns process ID). WARNING: grants full shell access — RBAC exec permission bypasses filesystem restrictions"),
 		mcp.WithString("command",
 			mcp.Required(),
@@ -170,7 +176,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleExec)
 
 	// process_status
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("process_status",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("process_status"),
 		mcp.WithDescription("Get status and output of background processes. Without an ID, lists all background processes"),
 		mcp.WithString("id",
 			mcp.Description("Process ID to get status for (omit to list all)"),
@@ -178,7 +184,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleProcessStatus)
 
 	// process_kill
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("process_kill",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("process_kill"),
 		mcp.WithDescription("Kill a background process"),
 		mcp.WithString("id",
 			mcp.Required(),
@@ -187,7 +193,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleProcessKill)
 
 	// undo
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("undo",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("undo"),
 		mcp.WithDescription("Undo the last write_file or edit_file operation on a specific file path. Restores the file to its state before the last modification"),
 		mcp.WithString("path",
 			mcp.Required(),
@@ -196,7 +202,7 @@ func (tm *ToolsManager) AddTools() {
 	), tm.HandleUndo)
 
 	// scratch
-	tm.dependencies.McpServer.AddTool(mcp.NewTool("scratch",
+	tm.dependencies.McpServer.AddTool(mcp.NewTool(tm.toolName("scratch"),
 		mcp.WithDescription("In-memory key-value store for temporary data. Use to save snippets, plans, or intermediate results between tool calls without retransmitting them"),
 		mcp.WithString("action",
 			mcp.Required(),
