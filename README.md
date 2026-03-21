@@ -114,6 +114,24 @@ make build
 
 Output: `bin/filesystem-mcp-{os}-{arch}`
 
+### From source (Windows)
+
+The Makefile is primarily designed for Unix-like systems (Linux/macOS).  
+On Windows, use the provided batch script instead:
+
+```console
+.\build.cmd
+```
+
+This script runs `go fmt`, `go vet` and `go build`, producing `bin\filesystem-mcp.exe`.
+
+Alternatively, build manually:
+
+```cmd
+go build -o bin\filesystem-mcp.exe -ldflags "-s -w" cmd\main.go
+```
+
+
 ### From release binaries
 
 Download a prebuilt binary from the [Releases](https://github.com/achetronic/filesystem-mcp/releases) page. Binaries are available for linux/{386,amd64,arm64} and darwin/{amd64,arm64}.
