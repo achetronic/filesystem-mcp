@@ -15,9 +15,9 @@ import (
 )
 
 type searchMatch struct {
-	File       string   `json:"file"`
-	Line       int      `json:"line"`
-	Content    string   `json:"content"`
+	File          string   `json:"file"`
+	Line          int      `json:"line"`
+	Content       string   `json:"content"`
 	ContextBefore []string `json:"context_before,omitempty"`
 	ContextAfter  []string `json:"context_after,omitempty"`
 }

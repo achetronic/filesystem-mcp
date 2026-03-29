@@ -14,6 +14,9 @@ GO_OS ?= $(or $(GOOS),$(shell go env GOOS))
 # Get the current Go ARCH
 GO_ARCH ?= $(or $(GOARCH),$(shell go env GOARCH))
 
+# Binary extension (.exe for Windows)
+BINARY_EXT = $(if $(filter windows,$(GO_OS)),.exe,)
+
 OS=$(shell uname | tr '[:upper:]' '[:lower:]')
 
 # CONTAINER_TOOL defines the container tool to be used for building images.
@@ -80,7 +83,7 @@ swagger: install-swag ## Build Swagger documents.
 
 .PHONY: build
 build: fmt vet ## Build CLI binary.
-	go build -o bin/filesystem-mcp-$(GO_OS)-$(GO_ARCH) cmd/main.go
+	go build -o bin/filesystem-mcp-$(GO_OS)-$(GO_ARCH)$(BINARY_EXT) cmd/main.go
 
 .PHONY: run
 run: fmt vet ## Run a controller from your host.
@@ -104,9 +107,9 @@ package: ## Package binary.
 	@mkdir -p dist
 
 	@if [ "$(OS)" = "linux" ]; then \
-		tar --transform="s/filesystem-mcp-$(GO_OS)-$(GO_ARCH)/filesystem-mcp/" -cvzf dist/$(PACKAGE_NAME) -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
+		tar --transform="s/filesystem-mcp-$(GO_OS)-$(GO_ARCH)$(BINARY_EXT)/filesystem-mcp$(BINARY_EXT)/" -cvzf dist/$(PACKAGE_NAME) -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH)$(BINARY_EXT) -C ../ LICENSE README.md; \
 	elif [ "$(OS)" = "darwin" ]; then \
-		tar -cvzf dist/$(PACKAGE_NAME) -s '/filesystem-mcp-$(GO_OS)-$(GO_ARCH)/filesystem-mcp/' -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH) -C ../ LICENSE README.md; \
+		tar -cvzf dist/$(PACKAGE_NAME) -s '/filesystem-mcp-$(GO_OS)-$(GO_ARCH)$(BINARY_EXT)/filesystem-mcp$(BINARY_EXT)/' -C bin filesystem-mcp-$(GO_OS)-$(GO_ARCH)$(BINARY_EXT) -C ../ LICENSE README.md; \
 	else \
 		echo "Unsupported OS: $(GO_OS)"; \
 		exit 1; \

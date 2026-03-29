@@ -13,12 +13,12 @@ import (
 )
 
 type lsEntry struct {
-	Name    string    `json:"name"`
-	Path    string    `json:"path"`
-	Type    string    `json:"type"`
-	Size    int64     `json:"size,omitempty"`
-	Mode    string    `json:"mode"`
-	ModTime string    `json:"mod_time"`
+	Name     string    `json:"name"`
+	Path     string    `json:"path"`
+	Type     string    `json:"type"`
+	Size     int64     `json:"size,omitempty"`
+	Mode     string    `json:"mode"`
+	ModTime  string    `json:"mod_time"`
 	Children []lsEntry `json:"children,omitempty"`
 }
 

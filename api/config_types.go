@@ -34,9 +34,9 @@ type JWTAllowCondition struct {
 // JWTConfig represents the JWT middleware configuration.
 // When enabled, tokens are always validated locally against the JWKS fetched from jwks_uri.
 type JWTConfig struct {
-	Enabled         bool               `yaml:"enabled"`
-	JWKSUri         string             `yaml:"jwks_uri,omitempty"`
-	CacheInterval   time.Duration      `yaml:"cache_interval,omitempty"`
+	Enabled         bool                `yaml:"enabled"`
+	JWKSUri         string              `yaml:"jwks_uri,omitempty"`
+	CacheInterval   time.Duration       `yaml:"cache_interval,omitempty"`
 	AllowConditions []JWTAllowCondition `yaml:"allow_conditions,omitempty"`
 }
 
